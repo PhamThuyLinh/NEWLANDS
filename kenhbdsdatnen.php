@@ -60,7 +60,7 @@ foreach($LinksAdd as $key=>$value) {
 		$area3 = str_replace(' m²','',$area2);
 
 
-		//NOTE: CHUA XU LY PRICE XONG
+		
 		$price = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",5)->innertext;
 		$price1 = str_replace('<span>Giá: </span>','',$price);
 		if($price1 == "Thỏa thuận "){
