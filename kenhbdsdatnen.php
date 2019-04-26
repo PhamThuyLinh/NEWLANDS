@@ -63,15 +63,33 @@ foreach($LinksAdd as $key=>$value) {
 		//NOTE: CHUA XU LY PRICE XONG
 		$price = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",5)->innertext;
 		$price1 = str_replace('<span>Giá: </span>','',$price);
-		$price2 = str_replace(' VNĐ/m2','',$price1);
-		$price2 = str_replace(' VNĐ/Diện tích','',$price1);
-		$price3 = str_replace('.','',$price2);
-
-		if($price3 != "Thỏa thuận "){
-			$price4 = $price3 * $area3;
-			$price5 = $price4." VNĐ";
+		if($price1 == "Thỏa thuận "){
+			$price6 = $price1;
 		}else{
-			$price5 = $price3;
+			$price2 = strrev($price1);
+			if(substr($price2, 0, 1) == 'h'){
+			 	$price3 = str_replace(' VNĐ/Diện tích', '', $price1);
+			 	$price5 = str_replace('.','',$price3);
+			}
+
+			if(substr($price2, 0, 1) == '2'){
+			 	$price3 = str_replace(' VNĐ/m2', '', $price1);
+			 	$price4 = str_replace('.','',$price3);
+			 	$price5 = $price4 * $area3;
+			}
+			
+			if(strlen($price5)>6 and strlen($price5)<10){
+				$a = $price5 / 1000000;
+				$a1 = str_replace('.',',',$a);
+				echo $price6 = $a1."  Triệu VNĐ";
+			}
+
+			if(strlen($price5)>9){
+				$b = $price5 / 1000000000;
+				$b1 = str_replace('.',',',$b);
+				echo $price6 = $b1."  Tỷ VNĐ";
+			}
+			
 		}
 
 		$district = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",3)->innertext;
@@ -100,7 +118,7 @@ foreach($LinksAdd as $key=>$value) {
 			echo $idc = mysqli_insert_id($mysqli);
 
 
-			$update = "UPDATE lands set title = '$title', description='$desc',price='$price5',image ='$tenFile', create_day='$time3', area='$area2', location='$location',district='$district2', type='$type' ,detail ='$detail', id_contact='$idc' where id='$id'";
+			$update = "UPDATE lands set title = '$title', description='$desc',price='$price6',image ='$tenFile', create_day='$time3', area='$area2', location='$location',district='$district2', type='$type' ,detail ='$detail', id_contact='$idc' where id='$id'";
 
 			$result123 = mysqli_query($mysqli, $update);
 

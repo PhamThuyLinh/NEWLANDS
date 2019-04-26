@@ -2,18 +2,49 @@
 require "dbCon.php";
 require "simple_html_dom.php";
 
-$get = file_get_html("https://kenhbds.vn/can-ban/nha-dat/ban-dat-kiet-kinh-doanh-o-to-vao-tan-nha-duong-le-dinh-ly/708050.html");
+		$get = file_get_html("https://kenhbds.vn/can-ban/nha-dat/ban-dat-nen-duong-dang-thai-than-gan-son-thuy-quan-ngu-hanh-son-da-nang/708563.html");
 
+		$area3 ="5";
 
-// echo $seller = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",6)->innertext;
-echo $phone = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",8)->innertext;
-echo "<br />";
-echo $phone1 = str_replace('<span>Điện thoại: </span>', '', $phone);
+		$price = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",5)->innertext;
+		$price1 = str_replace('<span>Giá: </span>','',$price);
+		if($price1 == "Thỏa thuận "){
+			echo $price6 = $price1;
 
+		}else{
+			$price2 = strrev($price1);
+			if(substr($price2, 0, 1) == 'h'){
+			 	$price3 = str_replace(' VNĐ/Diện tích', '', $price1);
+			 	$price5 = str_replace('.','',$price3);
+			}
 
-// echo $address = $get->find("div.contai div.container div.center3 div.box1 div.c3_tt p",9)->innertext;
+			if(substr($price2, 0, 1) == '2'){
+			 	$price3 = str_replace(' VNĐ/m2', '', $price1);
+			 	$price4 = str_replace('.','',$price3);
+			 	$price5 = $price4 * $area3;
+			}
+			
+			//$price6 = $price5." VNĐ";
+			//$price7 = strrev($price5);
 
+			// if(substr($price7, 0, 6) == '000000'){
+			// 	echo $price8 =  str_replace('000000 VNĐ', ' Triệu VNĐ', $price6);
+			// }
 
+			if(strlen($price5)>6 and strlen($price5)<10){
+				$a = $price5 / 1000000;
+				$a1 = str_replace('.',',',$a);
+				echo $a2 = $a1."  Triệu VNĐ";
+			}
+
+			if(strlen($price5)>9){
+				$b = $price5 / 1000000000;
+				$b1 = str_replace('.',',',$b);
+				echo $b2 = $b1."  Tỷ VNĐ";
+			}
+		}
+
+		
 
 
 
