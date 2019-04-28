@@ -2,9 +2,10 @@
 require "simple_html_dom.php";
 require "dbCon.php";
 
-for($i =2 ; $i<4; $i++){
+//for($i =2 ; $i<4; $i++){
 
-$html = file_get_html("https://kenhbds.vn/thong-tin/tin-tuc-su-kien/page/".$i);
+//$html = file_get_html("https://kenhbds.vn/thong-tin/tin-tuc-su-kien/page/".$i);
+$html = file_get_html("https://kenhbds.vn/thong-tin/tin-tuc-su-kien/page/2");
 
 $tins = $html->find("div#main div#page_content div#pg_content_center div.pg_content_ct_11");
 
@@ -40,9 +41,9 @@ foreach($LinksAdd as $key=>$value) { //Foreach để lấy $link mới insert v�
  		$id = mysqli_insert_id($mysqli);
 		$get = file_get_html($value);
 
-	$title = $get->find("div#page_content h1.article_title",0)->innertext;
+	echo $title = $get->find("div#page_content h1.article_title",0)->innertext;
 	
-
+	echo "<br />";
 	$time = $get->find("div.article_time",0)->innertext;
 	$time = substr($time, 0,10);
 	$time = DateTime::createFromFormat('d/m/Y',$time);
@@ -52,16 +53,16 @@ foreach($LinksAdd as $key=>$value) { //Foreach để lấy $link mới insert v�
 	$img =$get->find("img",1)->src;
 
 
-	$u = 'tintuc/'.basename($img);
+	$u = 'D:\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\project_cland\files/'.basename($img);
 	file_put_contents($u, file_get_contents($img));
 	$tenFile = basename($img);
 		
-	$detail = $get->find("div.article_content p",2)->innertext;
+	$detail = $get->find("div.article_content",0)->plaintext;
 
 	$qr ="UPDATE news set title='$title', description='$desc', image ='$tenFile', time='$time', detail='$detail' where id='$id'";
 
  	$result2 = mysqli_query($mysqli, $qr);
 }
 }
-}
+//}
 ?>

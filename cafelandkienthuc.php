@@ -5,7 +5,7 @@ require "simple_html_dom.php";
 //for($i =1 ; $i<3; $i++){
 	//$html = file_get_html("https://cafeland.vn/kien-thuc/kien-thuc-bat-dong-san/47/page-".$i."/");
 
-	$html = file_get_html("https://cafeland.vn/kien-thuc/kien-thuc-bat-dong-san/47/page-3/");
+	$html = file_get_html("https://cafeland.vn/kien-thuc/kien-thuc-bat-dong-san/47/page-6/");
 	$tins = $html->find("div.wrap-main div.container div.left-col div.block div.page-content div.box-content ul.list-type-14 li");
 	set_time_limit(0);
 	echo count($tins);
@@ -48,13 +48,18 @@ require "simple_html_dom.php";
 
 
 			$img = $get->find("img",10)->src;
-			$u = 'kienthuc/'.basename($img);
+			$u = 'D:\workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\project_cland\files/'.basename($img);
 			file_put_contents($u, file_get_contents($img));
 			$tenFile = basename($img);
 
 			$desc = $get->find("div.sevenPostContent div.sevenPostDes",0)->plaintext;
 
-			$qr ="UPDATE knowledge set title='$title', description='$desc', detail='$desc' , time='$time',image='$tenFile' where id='$id'";
+			$detail = $get->find("div.sevenPostContent",0)->plaintext;
+			$detail1 = $get->find("div.sevenPostContent em",0)->plaintext;
+			$detail2 = str_replace($detail1,'',$detail);
+
+
+			$qr ="UPDATE knowledge set title='$title', description='$desc', detail='$detail2' , time='$time',image='$tenFile' where id='$id'";
 			$result = mysqli_query($mysqli, $qr);
 
 	}
